@@ -1,0 +1,72 @@
+package com.jrosetim.testearw.resource;
+
+import com.jrosetim.testearw.DTO.PessoaContatoDTO;
+import com.jrosetim.testearw.DTO.PessoaDTO;
+import com.jrosetim.testearw.exception.RegraNegocioException;
+import com.jrosetim.testearw.model.PessoaContatoModel;
+import com.jrosetim.testearw.model.PessoaModel;
+import com.jrosetim.testearw.service.PessoaContatoService;
+import com.jrosetim.testearw.service.PessoaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/pessoacontato")
+public class PessoaContatoResource {
+
+    @Autowired
+    private PessoaContatoService service;
+
+    @Autowired
+    private PessoaService pessoaService;
+
+    @GetMapping
+    public List<PessoaContatoModel> getAll(){
+        return service.getAll();
+    }
+
+    @PostMapping
+    public ResponseEntity salvar(@RequestBody PessoaContatoDTO dto){
+        Optional<PessoaModel> pessoa = pessoaService.filtrarPorId(dto.getPessoaid());
+
+        if (pessoa.isPresent()){
+            PessoaContatoModel pessoaContato = PessoaContatoModel
+                    .builder()
+                    .nome(dto.getNome())
+                    .telefone(dto.getTelefone())
+                    .celular(dto.getCelular())
+                    .pessoa(pessoa.get())
+                    .build();
+
+            PessoaContatoModel pessoaContatoSalva = service.salvar(pessoaContato);
+
+            return ResponseEntity.ok(pessoaContatoSalva);
+        }else{
+            throw new RegraNegocioException("Pessoa Não encontrada");
+        }
+    }
+
+
+    @GetMapping("{idpessoa}")
+    public List<PessoaContatoModel> buscaPorPessoaId(@PathVariable Long idpessoa){
+        Optional<PessoaModel> pessoa = pessoaService.filtrarPorId(idpessoa);
+
+        if (pessoa.isPresent()){
+            List<PessoaContatoModel> contatos = service.contatosPorPessoa(pessoa.get().getId());
+
+            return contatos;
+        }else{
+            throw new RegraNegocioException("Pessoa não cadastrada.");
+        }
+    }
+}
