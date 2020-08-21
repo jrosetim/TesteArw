@@ -6,15 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "pessoa")
@@ -36,4 +39,7 @@ public class PessoaModel {
     private LocalDate datanascimento;
 
     private String cpf;
+
+//    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+//    private List<PessoaContatoModel> pessoaContatoModel;
 }

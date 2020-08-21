@@ -3,6 +3,7 @@ package com.jrosetim.testearw.resource;
 import com.jrosetim.testearw.DTO.PessoaDTO;
 import com.jrosetim.testearw.model.PessoaModel;
 import com.jrosetim.testearw.repository.PessoaRepository;
+import com.jrosetim.testearw.service.PessoaContatoService;
 import com.jrosetim.testearw.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class PessoaResource {
 
     @Autowired
     private PessoaService service;
+
+    @Autowired
+    private PessoaContatoService pessoaContatoService;
 
     @GetMapping
     public List<PessoaModel> getPessoas(){
@@ -63,20 +67,11 @@ public class PessoaResource {
         return ResponseEntity.ok(pessoaSalva);
     }
 
-    @DeleteMapping
-    public void deletar(@RequestBody PessoaDTO dto){
-        Objects.requireNonNull(dto.getId());
+    @DeleteMapping("{id}")
+    public void deletar(@PathVariable Long id){
+//        pessoaContatoService.deletarPorPessoa(id);
 
-        PessoaModel pessoa = PessoaModel
-                .builder()
-                .id(dto.getId())
-                .nome(dto.getNome())
-                .rg(dto.getRg())
-                .datanascimento(dto.getDatanascimento())
-                .cpf(dto.getCpf())
-                .build();
-
-        service.deletar(pessoa);
+        service.deletar(id);
     }
 
 }

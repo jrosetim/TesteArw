@@ -1,7 +1,6 @@
 package com.jrosetim.testearw.resource;
 
 import com.jrosetim.testearw.DTO.PessoaContatoDTO;
-import com.jrosetim.testearw.DTO.PessoaDTO;
 import com.jrosetim.testearw.exception.RegraNegocioException;
 import com.jrosetim.testearw.model.PessoaContatoModel;
 import com.jrosetim.testearw.model.PessoaModel;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,11 +56,11 @@ public class PessoaContatoResource {
 
 
     @GetMapping("{idpessoa}")
-    public List<PessoaContatoModel> buscaPorPessoaId(@PathVariable Long idpessoa){
+    public Optional<PessoaContatoModel> buscaPorPessoaId(@PathVariable Long idpessoa){
         Optional<PessoaModel> pessoa = pessoaService.filtrarPorId(idpessoa);
 
         if (pessoa.isPresent()){
-            List<PessoaContatoModel> contatos = service.contatosPorPessoa(pessoa.get().getId());
+            Optional<PessoaContatoModel> contatos = service.contatosPorPessoa(pessoa.get().getId());
 
             return contatos;
         }else{

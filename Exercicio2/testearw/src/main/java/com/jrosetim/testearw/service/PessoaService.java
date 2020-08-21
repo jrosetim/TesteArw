@@ -10,7 +10,7 @@ public interface PessoaService {
 
     PessoaModel editar(PessoaModel pessoaModel);
 
-    void deletar(PessoaModel pessoaModel);
+    void deletar(Long id);
 
     Optional<PessoaModel> filtrarPorId(Long id);
 

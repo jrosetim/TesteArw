@@ -1,6 +1,7 @@
 package com.jrosetim.testearw.serviceImpl;
 
 import com.jrosetim.testearw.model.PessoaModel;
+import com.jrosetim.testearw.repository.PessoaContatoRepository;
 import com.jrosetim.testearw.repository.PessoaRepository;
 import com.jrosetim.testearw.service.PessoaService;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,10 @@ import java.util.Optional;
 public class PessoaSeviceImpl implements PessoaService {
 
     @Autowired
-    PessoaRepository repository;
+    private PessoaRepository repository;
+
+    @Autowired
+    private PessoaContatoRepository pessoaContatoRepository;
 
     @Override
     @Transactional
@@ -39,10 +43,8 @@ public class PessoaSeviceImpl implements PessoaService {
 
     @Override
     @Transactional
-    public void deletar(PessoaModel pessoaModel) {
-        Objects.requireNonNull(pessoaModel.getId());
-
-        repository.deleteById(pessoaModel.getId());
+    public void deletar(Long id) {
+        repository.deleteById(id);
     }
 
     @Override
