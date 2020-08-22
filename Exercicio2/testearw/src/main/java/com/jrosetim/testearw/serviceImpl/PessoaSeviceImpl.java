@@ -74,7 +74,7 @@ public class PessoaSeviceImpl implements PessoaService {
     }
 
     public void validaDados(PessoaModel pessoaModel){
-        if(pessoaModel.getNome().length() < 0 || pessoaModel.getNome().trim() != " "){
+        if(pessoaModel.getNome().length() < 0 || pessoaModel.getNome().trim() == ""){
             throw new RegraNegocioException("Digite um nome para a pessoa");
         }
     }
