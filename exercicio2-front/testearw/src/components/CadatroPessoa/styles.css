@@ -1,0 +1,7 @@
+.painel {
+  box-sizing: border-box;
+  margin-left: 500px;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
