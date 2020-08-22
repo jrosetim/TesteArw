@@ -3,7 +3,6 @@ package com.jrosetim.testearw.service;
 import com.jrosetim.testearw.model.PessoaContatoModel;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PessoaContatoService {
 
@@ -11,13 +10,13 @@ public interface PessoaContatoService {
 
     PessoaContatoModel editar(PessoaContatoModel pessoaContatoModel);
 
-    void deletar(PessoaContatoModel pessoaContatoModel);
+    void deletar(Long id);
 
     List<PessoaContatoModel> contatosPorPessoa(Long pessoaId);
 
     List<PessoaContatoModel> getAll();
 
-    Optional<PessoaContatoModel> buscarPorId(Long id);
+    List<PessoaContatoModel> buscar(PessoaContatoModel pessoaContatoFiltro);
 
-//    void deletarPorPessoa(Long pessoaId);
+    PessoaContatoModel burcarPorId(Long id);
 }

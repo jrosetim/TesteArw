@@ -1,8 +1,9 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import PessoaContext from '../context/pessoaContext';
+import api from '../../service/api';
 
 import './style.css';
-import api from '../../service/api';
 
 interface IData{
   id: number,
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
   const [insertData, setInsertData] = useState<Boolean>(false);
   const [updateGrid, setUpdateGrid] = useState<Boolean>(false);
   const [idSelecionado, setIdSelecionado] = useState<number>(-1);
+  const {AtualizaIdPessoa} = useContext(PessoaContext);
 
   const [dataRegister, setDataRegister] = useState({
     nome: '',
@@ -71,7 +73,7 @@ const Home: React.FC = () => {
       (
         async() => (
           await api.get(`pessoa/${idSelecionado}`).then( resolve => {
-            setDataRegister(resolve.data)
+            setDataRegister(resolve.data)            
           })
         )
       )()
@@ -105,7 +107,8 @@ const Home: React.FC = () => {
     setUpdateGrid(true);
   }  
 
-  const handleClickContato = () => {
+  const handleClickContato = (event: FormEvent<HTMLButtonElement>) => {
+    AtualizaIdPessoa(parseInt(event.currentTarget.value));
     history.push('/cadastrocontato')
   }
 

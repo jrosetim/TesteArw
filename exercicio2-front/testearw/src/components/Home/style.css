@@ -57,4 +57,23 @@
 
 .formulario .buttonGrid:hover{
   background-color: var(--color-azul-claro);  
+  width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+th {
+  padding: 5px;
+}
+
+td {
+  /* background-color: bisque; */
+  padding: 5px;  
+  text-align: center;
+
+  border-bottom: solid 1px;
 }

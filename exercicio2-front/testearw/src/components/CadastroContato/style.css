@@ -1,0 +1,79 @@
+.container {
+  width: 800px;
+  height: 100vh;
+  margin-left: 300px;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+}
+
+ .formulario {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+} 
+
+.formulario label{
+  margin-top: 10px;
+}
+
+ .formulario input{
+  position: relative;
+  width: 100%;
+  height: 20px;
+  padding: 3px;
+  border: none;
+  outline: none;
+  height: 35px;
+  margin-top: 3px;
+} 
+
+.formulario .buttonAdiconar{
+  background-color: var(--color-azul-escuro);
+  margin-top: 10px;
+  height: 35px;
+  border: none;
+  outline: none;
+  transition: 0.2s;
+  color: white;
+}
+
+.formulario button:hover{
+  background-color: var(--color-azul-claro);
+}
+
+.formulario .buttonGrid{
+  background-color: var(--color-azul-escuro);
+  color: white;
+  border: none;
+  outline: none;
+  transition: 0.2s;
+  width: 60px;
+  height: 20px;
+}
+
+.formulario .buttonGrid:hover{
+  background-color: var(--color-azul-claro);  
+  width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+th {
+  padding: 5px;
+}
+
+td {
+  /* background-color: bisque; */
+  padding: 5px;  
+  text-align: center;
+
+  border-bottom: solid 1px;
+}

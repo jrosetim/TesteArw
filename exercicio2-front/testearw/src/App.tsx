@@ -2,12 +2,15 @@ import React from 'react';
 import Routes from './routes';
 
 import './app.css';
+import { PessoaContextProvider } from './components/context/pessoaContext';
 
 function App() {
   return (
-    <div className="App">
-      <Routes />
-    </div>
+    <PessoaContextProvider>
+      <div className="App">
+        <Routes />
+      </div>
+    </PessoaContextProvider>
   );
 }
 

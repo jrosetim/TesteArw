@@ -1,8 +1,9 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import './style.css';
 import api from '../../service/api';
+import PessoaContext from '../context/pessoaContext';
 
 interface IData{
   id: number,
@@ -18,11 +19,13 @@ const CadastroContato
   const [insertData, setInsertData] = useState<Boolean>(false);
   const [updateGrid, setUpdateGrid] = useState<Boolean>(false);
   const [idSelecionado, setIdSelecionado] = useState<number>(-1);
+  const {id} = useContext(PessoaContext)
 
   const [dataRegister, setDataRegister] = useState({
     nome: '',
     telefone: '',
-    celular: ''
+    celular: '',
+    pessoaid: id
   })
 
   const [data, setData] = useState<[IData]>([{
@@ -30,7 +33,7 @@ const CadastroContato
     nome:'',
     telefone:'',
     celular:'',
-    pessoaid: -1
+    pessoaid: id
   }]);
   
   useEffect( () => {
@@ -53,32 +56,35 @@ const CadastroContato
     } , [insertData] )
 
     useEffect( () => {
-      (
-        async() => (
-          await api.get('/pessoacontato').then(resolve =>{
-            setData(resolve.data);
-            console.log(resolve.data);
-            setUpdateGrid(false);
-          })
-
-        )
-      )()
+      if (id > 0) {
+        (
+          async() => (
+            await api.get(`/pessoacontato?pessoaId=${id}`).then(resolve =>{
+              setData(resolve.data);              
+              setUpdateGrid(false);
+            })
+  
+          )
+        )()
+      }
     }, [updateGrid] )
 
-
     useEffect( () => {
-      (
-        async() => (
-          await api.get(`pessoacontato/${idSelecionado}`).then( resolve => {
-            setDataRegister(resolve.data)
-          })
-        )
-      )()
+        (
+          async() => (
+            await api.get(`/pessoacontato/${idSelecionado}`).then( resolve => {
+              const pessoaid = resolve.data.pessoa.id;
+              setDataRegister({...resolve.data, pessoaid});
+              console.log(pessoaid);
+
+            })
+          )
+        )()
     }, [idSelecionado] )    
     
   const handleRegister = (event: FormEvent) => {
     event.preventDefault();
-
+    // setDataRegister({...dataRegister, pessoaid: id})
     setInsertData(true);
   }
 
@@ -90,16 +96,15 @@ const CadastroContato
 
   async function handlerEditClick(event: FormEvent<HTMLButtonElement>){
     event.preventDefault();
-    
-    setIdSelecionado( parseInt(event.currentTarget.value));
+  
+    setIdSelecionado(parseInt(event.currentTarget.value));
   }
 
-  
   async function handlerDeleteClick(event: FormEvent<HTMLButtonElement>){
     event.preventDefault();
     const value = parseInt(event.currentTarget.value); 
 
-    await api.delete(`pessoa/${value}`);
+    await api.delete(`pessoacontato/${value}`);
     
     setUpdateGrid(true);
   }  
@@ -180,5 +185,4 @@ const CadastroContato
   );
 }
 
-export default CadastroContato
-;
+export default CadastroContato;

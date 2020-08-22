@@ -100,7 +100,7 @@ public class PessoaResource {
         List<PessoaContatoModel> contatos = pessoaContatoService.contatosPorPessoa(id);
 
         for (int i = 0; i < contatos.size(); i++){
-            pessoaContatoService.deletar(contatos.get(i));
+            pessoaContatoService.deletar(contatos.get(i).getId());
         }
 
         service.deletar(id);
