@@ -42,10 +42,8 @@ const CadastroContato
         if (insertData){
           if (idSelecionado <= 0){
             await api.post('/pessoacontato', dataRegister);
-            alert('Cadastro efetuado com sucesso');
           }else{
             await api.put('/pessoacontato', dataRegister);
-            alert('Atuazação efetuada com sucesso');
           }
           setInsertData(false);
           setUpdateGrid(true);
@@ -120,6 +118,7 @@ const CadastroContato
           id="nome"
           onChange={handleInputChange}  
           value={dataRegister.nome}
+          required={true}
         />
 
         <label>Telefone</label>

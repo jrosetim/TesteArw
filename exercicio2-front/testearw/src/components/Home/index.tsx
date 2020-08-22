@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect, useContext } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, useContext, KeyboardEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import PessoaContext from '../context/pessoaContext';
 import api from '../../service/api';
@@ -20,6 +20,8 @@ const Home: React.FC = () => {
   const [updateGrid, setUpdateGrid] = useState<Boolean>(false);
   const [idSelecionado, setIdSelecionado] = useState<number>(-1);
   const {AtualizaIdPessoa} = useContext(PessoaContext);
+  const [filtroByNome, setFiltroByNome] = useState<string>('');
+  const [filtrar, setFiltrar] = useState<Boolean>(false);
 
   const [dataRegister, setDataRegister] = useState({
     nome: '',
@@ -42,10 +44,8 @@ const Home: React.FC = () => {
         if (insertData){
           if (idSelecionado <= 0){
             await api.post('/pessoa', dataRegister);
-            alert('Cadastro efetuado com sucesso');
           }else{
             await api.put('/pessoa', dataRegister);
-            alert('Atuazação efetuada com sucesso');
           }
           setInsertData(false);
           setUpdateGrid(true);
@@ -53,32 +53,44 @@ const Home: React.FC = () => {
         }
       }
       )();
-    } , [insertData] )
+  } , [insertData] )
 
-    useEffect( () => {
+  useEffect( () => {
+    (
+      async() => (
+        await api.get('/pessoa').then(resolve =>{
+          setData(resolve.data);
+          setUpdateGrid(false);
+        })
+      )
+    )()
+  }, [updateGrid] )
+
+  useEffect( () => {
+    (
+      async() => (
+        await api.get(`pessoa/${idSelecionado}`).then( resolve => {
+          setDataRegister(resolve.data)            
+        })
+      )
+    )()
+  }, [idSelecionado] )    
+  
+  useEffect( () => {
+    if(filtrar){
       (
         async() => (
-          await api.get('/pessoa').then(resolve =>{
-            setData(resolve.data);
+          await api.get(`/pessoa?nome=${filtroByNome}`).then( resolve => {
+            setData(resolve.data)    
+            setFiltrar(false);
+            // setUpdateGrid(true);
             console.log(resolve.data);
-            setUpdateGrid(false);
-          })
-
-        )
-      )()
-    }, [updateGrid] )
-
-
-    useEffect( () => {
-      (
-        async() => (
-          await api.get(`pessoa/${idSelecionado}`).then( resolve => {
-            setDataRegister(resolve.data)            
           })
         )
       )()
-    }, [idSelecionado] )    
-    
+    }
+  }, [filtrar] )       
+
   const handleRegister = (event: FormEvent) => {
     event.preventDefault();
 
@@ -91,12 +103,21 @@ const Home: React.FC = () => {
       setDataRegister({...dataRegister, [name]: value});
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+     if ((event.key === 'Enter')){
+       event.preventDefault();
+     }             
+  }
+
+  const handleInputFilterChange =  (event: ChangeEvent<HTMLInputElement>) => {
+    setFiltroByNome(event.target.value);
+  }  
+
   async function handlerEditClick(event: FormEvent<HTMLButtonElement>){
     event.preventDefault();
     
     setIdSelecionado( parseInt(event.currentTarget.value));
   }
-
   
   async function handlerDeleteClick(event: FormEvent<HTMLButtonElement>){
     event.preventDefault();
@@ -112,9 +133,15 @@ const Home: React.FC = () => {
     history.push('/cadastrocontato')
   }
 
+  const hanldePesquisarClick = (event : FormEvent<HTMLButtonElement> ) => {
+    event.preventDefault();
+    setFiltrar(true);
+    console.log('Pesquisou');
+  }
+
   return (
     <div className="container">     
-      <form onSubmit={handleRegister} className="formulario">
+      <form onKeyDown={handleKeyDown} onSubmit={handleRegister} className="formulario">
         <label>Nome</label>
         <input 
           type="text" 
@@ -123,6 +150,7 @@ const Home: React.FC = () => {
           id="nome"
           onChange={handleInputChange}  
           value={dataRegister.nome}
+          required={true}
         />
 
         <label>Rg</label>
@@ -133,6 +161,7 @@ const Home: React.FC = () => {
           id="rg"
           onChange={handleInputChange} 
           value={dataRegister.rg}
+          required={true}
         />
 
         <label>Cpf</label>
@@ -143,19 +172,34 @@ const Home: React.FC = () => {
           id="cpf"
           onChange={handleInputChange}  
           value={dataRegister.cpf}
+          required={true}
         />
 
         <label>Data nascimento</label>
         <input 
-          type="text" 
+          type="date" 
           placeholder="Data nascimento"
           name="datanascimento"
           id="datanascimento"
           onChange={handleInputChange}  
           value={dataRegister.datanascimento}
+          required={true}
         />  
 
         <button className="buttonAdiconar">Adicionar</button>
+
+        <input 
+          type="text" 
+          onChange={handleInputFilterChange}
+          className="inputPesquisar"
+          placeholder="Digite um nome para pesquisar"
+        />
+        <button 
+          onClick={hanldePesquisarClick}
+          className="buttonPesquisar"
+          >
+          Pesquisar
+        </button>
 
         <br/>
         <br/>

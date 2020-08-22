@@ -4,7 +4,7 @@
   margin-left: 300px;
   align-items: center;
   justify-content: center;
-  background-color: lightgray;
+  background-color: #ebe6e6b2;
 }
 
  .formulario {
@@ -29,6 +29,7 @@
   outline: none;
   height: 35px;
   margin-top: 3px;
+  color: var(--text-color);
 } 
 
 .formulario .buttonAdiconar{
@@ -39,6 +40,7 @@
   outline: none;
   transition: 0.2s;
   color: white;
+  border-radius: 3px;
 }
 
 .formulario button:hover{
@@ -53,11 +55,35 @@
   transition: 0.2s;
   width: 60px;
   height: 20px;
+  border-radius: 3px;
 }
 
 .formulario .buttonGrid:hover{
   background-color: var(--color-azul-claro);  
   width: 100%;
+}
+
+.formulario .inputPesquisar{
+  position: relative;
+  width: 100%;
+  height: 20px;
+  padding: 3px;
+  border: none;
+  outline: none;
+  height: 35px;
+  margin-top: 10px;
+  color: var(--text-color);  
+}
+
+.formulario .buttonPesquisar{
+  background-color: var(--color-azul-escuro);
+  margin-top: 5px;
+  height: 35px;
+  border: none;
+  outline: none;
+  transition: 0.2s;
+  color: white;
+  border-radius: 3px;
 }
 
 table {
@@ -68,6 +94,12 @@ table {
 
 th {
   padding: 5px;
+  transition: 0.5s;
+  
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2
 }
 
 td {
