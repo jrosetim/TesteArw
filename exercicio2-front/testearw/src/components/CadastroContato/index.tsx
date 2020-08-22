@@ -7,13 +7,13 @@ import api from '../../service/api';
 interface IData{
   id: number,
   nome?: string;
-  rg?: string;
-  cpf?: string;
-  datanascimento?: string;
+  telefone: string;
+  celular?: string;
+  pessoaid:number;
 }
 
-
-const Home: React.FC = () => {
+const CadastroContato
+: React.FC = () => {
   const history = useHistory();
   const [insertData, setInsertData] = useState<Boolean>(false);
   const [updateGrid, setUpdateGrid] = useState<Boolean>(false);
@@ -21,17 +21,16 @@ const Home: React.FC = () => {
 
   const [dataRegister, setDataRegister] = useState({
     nome: '',
-    rg: '',
-    cpf: '',
-    datanascimento: ''
+    telefone: '',
+    celular: ''
   })
 
   const [data, setData] = useState<[IData]>([{
     id: -1,
     nome:'',
-    rg:'',
-    cpf:'',
-    datanascimento:''
+    telefone:'',
+    celular:'',
+    pessoaid: -1
   }]);
   
   useEffect( () => {
@@ -39,10 +38,10 @@ const Home: React.FC = () => {
       async() => {
         if (insertData){
           if (idSelecionado <= 0){
-            await api.post('/pessoa', dataRegister);
+            await api.post('/pessoacontato', dataRegister);
             alert('Cadastro efetuado com sucesso');
           }else{
-            await api.put('/pessoa', dataRegister);
+            await api.put('/pessoacontato', dataRegister);
             alert('Atuazação efetuada com sucesso');
           }
           setInsertData(false);
@@ -56,7 +55,7 @@ const Home: React.FC = () => {
     useEffect( () => {
       (
         async() => (
-          await api.get('/pessoa').then(resolve =>{
+          await api.get('/pessoacontato').then(resolve =>{
             setData(resolve.data);
             console.log(resolve.data);
             setUpdateGrid(false);
@@ -70,7 +69,7 @@ const Home: React.FC = () => {
     useEffect( () => {
       (
         async() => (
-          await api.get(`pessoa/${idSelecionado}`).then( resolve => {
+          await api.get(`pessoacontato/${idSelecionado}`).then( resolve => {
             setDataRegister(resolve.data)
           })
         )
@@ -105,10 +104,6 @@ const Home: React.FC = () => {
     setUpdateGrid(true);
   }  
 
-  const handleClickContato = () => {
-    history.push('/cadastrocontato')
-  }
-
   return (
     <div className="container">     
       <form onSubmit={handleRegister} className="formulario">
@@ -122,35 +117,25 @@ const Home: React.FC = () => {
           value={dataRegister.nome}
         />
 
-        <label>Rg</label>
+        <label>Telefone</label>
         <input 
           type="text" 
-          placeholder="Rg"
-          name="rg"
-          id="rg"
+          placeholder="Telefone"
+          name="telefone"
+          id="telefone"
           onChange={handleInputChange} 
-          value={dataRegister.rg}
+          value={dataRegister.telefone}
         />
 
-        <label>Cpf</label>
+        <label>Celular</label>
         <input 
           type="text" 
-          placeholder="Cpf"
-          name="cpf"
-          id="cpf"
+          placeholder="Celular"
+          name="celular"
+          id="celular"
           onChange={handleInputChange}  
-          value={dataRegister.cpf}
+          value={dataRegister.celular}
         />
-
-        <label>Data nascimento</label>
-        <input 
-          type="text" 
-          placeholder="Data nascimento"
-          name="datanascimento"
-          id="datanascimento"
-          onChange={handleInputChange}  
-          value={dataRegister.datanascimento}
-        />  
 
         <button className="buttonAdiconar">Adicionar</button>
 
@@ -159,18 +144,16 @@ const Home: React.FC = () => {
         <table>
           <tr>
             <th scope="col">Nome</th>
-            <th scope="col">Rg</th>
-            <th scope="col">Cpf</th>
-            <th scope="col">Data nascimento</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Celular</th>
           </tr>
 
           {
             data.map( item => (
               <tr key={item.id}>
                 <td>{item.nome}</td>   
-                <td>{item.rg}</td>   
-                <td>{item.cpf}</td>   
-                <td>{item.datanascimento}</td>  
+                <td>{item.telefone}</td>   
+                <td>{item.celular}</td>   
                 <td>
                   <button 
                       onClick={handlerEditClick}  
@@ -188,15 +171,6 @@ const Home: React.FC = () => {
                       Deletar
                    </button>
                 </td> 
-                    
-                <td>
-                  <button 
-                    value={item.id} 
-                    className="buttonGrid"
-                    onClick={handleClickContato}>
-                    Contatos
-                  </button>
-                </td> 
               </tr>
              ) )
           }
@@ -206,4 +180,5 @@ const Home: React.FC = () => {
   );
 }
 
-export default Home;
+export default CadastroContato
+;
