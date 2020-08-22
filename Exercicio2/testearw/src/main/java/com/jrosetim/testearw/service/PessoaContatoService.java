@@ -13,9 +13,11 @@ public interface PessoaContatoService {
 
     void deletar(PessoaContatoModel pessoaContatoModel);
 
-    Optional<PessoaContatoModel> contatosPorPessoa(Long pessoaId);
+    List<PessoaContatoModel> contatosPorPessoa(Long pessoaId);
 
     List<PessoaContatoModel> getAll();
+
+    Optional<PessoaContatoModel> buscarPorId(Long id);
 
 //    void deletarPorPessoa(Long pessoaId);
 }

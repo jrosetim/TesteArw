@@ -9,6 +9,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.persistence.CascadeType;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +41,6 @@ public class PessoaModel {
 
     private String cpf;
 
-//    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.REMOVE)
 //    private List<PessoaContatoModel> pessoaContatoModel;
 }

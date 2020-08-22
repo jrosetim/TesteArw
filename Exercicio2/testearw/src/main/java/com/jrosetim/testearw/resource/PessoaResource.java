@@ -1,6 +1,8 @@
 package com.jrosetim.testearw.resource;
 
 import com.jrosetim.testearw.DTO.PessoaDTO;
+import com.jrosetim.testearw.exception.RegraNegocioException;
+import com.jrosetim.testearw.model.PessoaContatoModel;
 import com.jrosetim.testearw.model.PessoaModel;
 import com.jrosetim.testearw.repository.PessoaRepository;
 import com.jrosetim.testearw.service.PessoaContatoService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,8 +33,20 @@ public class PessoaResource {
     private PessoaContatoService pessoaContatoService;
 
     @GetMapping
-    public List<PessoaModel> getPessoas(){
-        return service.getAll();
+    public List<PessoaModel> getPessoas(
+            @RequestParam(value = "nome", required = false) String nome,
+            @RequestParam(value = "rg", required = false) String rg,
+            @RequestParam(value = "cpf", required = false) String cpf
+    ){
+        PessoaModel pessoaFiltro = new PessoaModel();
+
+        pessoaFiltro.setNome(nome);
+        pessoaFiltro.setRg(rg);
+        pessoaFiltro.setCpf(cpf);
+
+        List<PessoaModel> pessoas = service.buscar(pessoaFiltro);
+
+        return pessoas;
     }
 
     @PostMapping
@@ -44,9 +59,14 @@ public class PessoaResource {
                 .cpf(dto.getCpf())
                 .build();
 
-        PessoaModel pessoaSalva = service.salvar(pessoa);
+        try{
+            PessoaModel pessoaSalva = service.salvar(pessoa);
 
-        return ResponseEntity.ok(pessoaSalva);
+            return ResponseEntity.ok(pessoaSalva);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 
@@ -69,7 +89,11 @@ public class PessoaResource {
 
     @DeleteMapping("{id}")
     public void deletar(@PathVariable Long id){
-//        pessoaContatoService.deletarPorPessoa(id);
+        List<PessoaContatoModel> contatos = pessoaContatoService.contatosPorPessoa(id);
+
+        for (int i = 0; i < contatos.size(); i++){
+            pessoaContatoService.deletar(contatos.get(i));
+        }
 
         service.deletar(id);
     }

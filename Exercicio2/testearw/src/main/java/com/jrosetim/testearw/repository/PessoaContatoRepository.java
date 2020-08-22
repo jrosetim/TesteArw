@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface PessoaContatoRepository extends JpaRepository<PessoaContatoModel, Long> {
 
-    Optional<PessoaContatoModel> findByPessoaId(Long pessoaid);
-
-//    void deleteByPessoaId(Long pessoaid);
+    List<PessoaContatoModel> findByPessoaId(Long pessoaid);
 }

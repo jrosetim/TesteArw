@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +34,8 @@ public class PessoaContatoServiceImpl implements PessoaContatoService {
     @Override
     @Transactional
     public PessoaContatoModel editar(PessoaContatoModel pessoaContatoModel) {
+        Objects.requireNonNull(pessoaContatoModel.getId());
+
         return repository.save(pessoaContatoModel);
     }
 
@@ -47,8 +48,8 @@ public class PessoaContatoServiceImpl implements PessoaContatoService {
     }
 
     @Override
-    public Optional<PessoaContatoModel> contatosPorPessoa(Long pessoaId) {
-        Optional<PessoaContatoModel> pessoaContato = repository.findByPessoaId(pessoaId);
+    public List<PessoaContatoModel> contatosPorPessoa(Long pessoaId) {
+        List<PessoaContatoModel> pessoaContato = repository.findByPessoaId(pessoaId);
 
         return pessoaContato;
     }
@@ -56,6 +57,11 @@ public class PessoaContatoServiceImpl implements PessoaContatoService {
     @Override
     public List<PessoaContatoModel> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<PessoaContatoModel> buscarPorId(Long id) {
+        return repository.findById(id);
     }
 
 //    @Override
