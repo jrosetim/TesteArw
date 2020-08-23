@@ -1,0 +1,43 @@
+*{
+  font-family: Roboto, sans-serif;
+}
+
+h1{
+  font-size: 100px;
+}
+
+.buttonsLetras{
+  border: none;
+  height: 35px;
+  width: 35px;
+  padding: 3px;
+  margin: 2px;
+  outline: none;
+}
+
+.buttonsLetras:hover{
+  background-color: royalblue;
+  color: white;
+}
+
+buttonsLetras:disabled{
+  background-color: aqua;
+}
+
+.buttonReset{
+  border: none;
+  height: 45px;
+  width: 150px;
+  padding: 3px;
+  margin: 5px;
+  outline: none;
+}
+
+
+.buttonReset:hover{
+  background-color: royalblue;
+  color: white;
+}
+
+
+

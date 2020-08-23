@@ -31,11 +31,6 @@ public class PessoaContatoResource {
     @Autowired
     private PessoaService pessoaService;
 
-//    @GetMapping
-//    public List<PessoaContatoModel> getAll(){
-//        return service.getAll();
-//    }
-
     @PostMapping
     public ResponseEntity salvar(@RequestBody PessoaContatoDTO dto){
         Optional<PessoaModel> pessoa = pessoaService.filtrarPorId(dto.getPessoaid());
@@ -50,19 +45,6 @@ public class PessoaContatoResource {
             throw new RegraNegocioException("Pessoa não encontrada");
         }
     }
-
-//    @GetMapping("{idpessoa}")
-//    public List<PessoaContatoModel> buscaPorPessoaId(@PathVariable Long idpessoa){
-//        Optional<PessoaModel> pessoa = pessoaService.filtrarPorId(idpessoa);
-//
-//        if (pessoa.isPresent()){
-//            List<PessoaContatoModel> contatos = service.contatosPorPessoa(pessoa.get().getId());
-//
-//            return contatos;
-//        }else{
-//            throw new RegraNegocioException("Pessoa não cadastrada.");
-//        }
-//    }
 
     @GetMapping("{id}")
     public PessoaContatoModel buscaPorPessoaId(@PathVariable Long id){

@@ -1,6 +1,5 @@
 package com.jrosetim.testearw.serviceImpl;
 
-import com.jrosetim.testearw.exception.RegraNegocioException;
 import com.jrosetim.testearw.model.PessoaContatoModel;
 import com.jrosetim.testearw.repository.PessoaContatoRepository;
 import com.jrosetim.testearw.service.PessoaContatoService;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Data
